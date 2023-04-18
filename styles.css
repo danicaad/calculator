@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    font-family: "Roboto Mono", sans-serif;
 }
 
 body {
@@ -14,24 +15,41 @@ body {
 #calc-body {
     display: flex;
     flex-direction: column;
-    gap: 25px;
     border: 1px solid black;
     border-radius: 10px;
     justify-content: center;
     align-items: space-around;
+    height: 500px;
 }
 
-#screen {
+#screen-output {
+    border-radius: 10px 10px 0 0;
+}
+
+#screen-input {
+    border-radius: 0 0 10px 10px
+}
+#screen-input, #screen-output {
+    display:flex;
+    justify-content: flex-end;
+    align-items: flex-end;
     background-color: rgb(206, 191, 191);
     width: 400px;
-    height: 100px;
-    margin: 30px 20px 10px 20px;
+    height: 50px;
+    margin: 0 20px 0 20px;
+    font-size: 35px;
+    padding-right: 10px;
+}
+
+.screen-text {
+    margin: 0 5px 0 0px;
+    
 }
 
 #buttons {
     display: flex;
     justify-content: space-between;
-    margin: 10px 20px 40px 20px;
+    margin: 10px 20px 0 20px;
 }
 #right-side {
     display: flex;
@@ -60,8 +78,9 @@ button {
     margin: 5px;
     width: 70px;
     font-size: 20px;
+    border-radius: 7px;
 }
 
-button.number, button.edit {
+button.number, button.edit, button.sign {
     width: 90px;
 }

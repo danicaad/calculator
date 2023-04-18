@@ -4,17 +4,19 @@
         <meta charset = "UTF-8" />
         <title>Simple Calculator 🌸</title>
         <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono|Nova+Oval"/>
         <script src="js-file.js" defer></script>
     </head>
     <body>
         <div id="calc-body">
-            <div id="screen"></div>
+            <div id="screen-output"></div>
+            <div id="screen-input">0</div>
             <div id="buttons">
                 <div id="right-side">
                     <div id="edit">
                         <button class="edit button" id="all-clear">AC</button>
                         <button class="edit button" id="clear">C</button>
-                        <button class="edit button" id="delete-">DEL</button>
+                        <button class="edit button" id="delete">DEL</button>
                     </div>
     
                     <div id="numbers">
@@ -28,8 +30,8 @@
                         <button class="number button" id="two">2</button>
                         <button class="number button" id="three">3</button>
                         <button class="number button" id="zero">0</button>
-                        <button class="number button" id="decimal">.</button>
-                        <button class="number button" id="sign">+/-</button>
+                        <button class="sign button" id="decimal">.</button>
+                        <button class="sign button" id="sign">+/-</button>
                     </div>
                 </div>
                 <div id="operation">
