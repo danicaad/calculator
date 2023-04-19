@@ -84,3 +84,8 @@ button {
 button.number, button.edit, button.sign {
     width: 90px;
 }
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
