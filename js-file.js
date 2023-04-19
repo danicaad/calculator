@@ -10,6 +10,12 @@ numberButtons.forEach((number) => number.addEventListener("click", () => inputNu
 const operationButtons = document.querySelectorAll('.operation');
 operationButtons.forEach((operation) => operation.addEventListener("click", () => chooseOperation(operation.textContent)));
 
+const decimal = document.querySelector("#decimal");
+decimal.addEventListener("click", () => addDecimal());
+
+const sign = document.querySelector("#sign");
+sign.addEventListener("click", () => changeSign());
+
 ac.addEventListener("click", () => {
     clearInput();
     firstNumber = 0;
@@ -25,6 +31,9 @@ clear.addEventListener("click", () => {
 
 del.addEventListener("click", () => {
     tempInput = tempInput.substring(0, tempInput.length - 1);
+    if (!tempInput.match(/\./)) {
+        document.getElementById("decimal").disabled = false;
+    }  
     screenInput.textContent = tempInput === "" ? "0" : tempInput;
     console.log(tempInput);
 });
@@ -51,15 +60,23 @@ function inputNumber(n) {
 
 function clearInput() {
     screenInput.textContent = "0";
+    document.getElementById("decimal").disabled = false;
     tempInput = "";
 }
 
 function chooseOperation(op) {
-    if (tempInput === "") {
+    if (operation === "=" && tempInput === "") {
         return;
     }
+    if (tempInput.charAt(tempInput.length - 1) === ".") {
+        tempInput = tempInput.slice(0, -1);
+    }
     if (isFirstNumber) {
+        if (tempInput === "") {
+            tempInput = "0";
+        }
         screenOutput.textContent = `${tempInput} ${op}`;
+        document.getElementById("decimal").disabled = false;
         operation = op;
         if (op === "=") {
             screenInput.textContent = `${tempInput}`;
@@ -69,6 +86,7 @@ function chooseOperation(op) {
         }
         firstNumber = parseFloat(tempInput);
         tempInput = "";
+        
         isFirstNumber = false;     
         return;
     }
@@ -82,6 +100,7 @@ function chooseOperation(op) {
         isFirstNumber = true;
         tempInput = firstNumber;
         operation = op;
+        document.getElementById("decimal").disabled = false;
         screenInput.textContent = `${firstNumber}`;  
         return;
     }    
@@ -109,4 +128,25 @@ function operate(operation) {
     }
     firstNumber = Math.round(firstNumber * 10) / 10;
     tempInput = "";
+}
+
+function addDecimal () {
+    if (operation === "=") {
+        tempInput = "";
+        operation = "";
+    }
+    tempInput = tempInput === "" ? "0." : tempInput + ".";
+    screenInput.textContent = tempInput;
+    document.getElementById("decimal").disabled = true;
+}
+
+function changeSign () {
+    if (tempInput === "" || tempInput === 0) return;
+    if (tempInput.charAt(0) !== "-") {
+        tempInput = "-" + tempInput;
+    } else if (tempInput.charAt(0) === "-") {
+        tempInput = tempInput.slice(1);
+        console.log(tempInput);
+    }
+    screenInput.textContent = tempInput;
 }
