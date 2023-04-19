@@ -33,7 +33,7 @@ const acceptedKeys = {
 };
 
 window.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") e.preventDefault();
+    if (e.key === "Enter" || e.key === "/") e.preventDefault();
     useKeys(e.key);
 
 });
@@ -57,7 +57,6 @@ function chooseOperation(op) {
         return;
     }
     if (tempInput.charAt(tempInput.length - 1) === ".") tempInput = tempInput.slice(0, -1);
-    
     if (isFirstNumber) {
         if (tempInput === "") tempInput = "0";    
         screenOutput.textContent = `${tempInput} ${op}`;

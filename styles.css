@@ -22,23 +22,30 @@ body {
     height: 500px;
 }
 
-#screen-output {
-    border-radius: 10px 10px 0 0;
-}
-
-#screen-input {
-    border-radius: 0 0 10px 10px
-}
 #screen-input, #screen-output {
     display:flex;
-    justify-content: flex-end;
-    align-items: flex-end;
     background-color: rgb(206, 191, 191);
     width: 400px;
     height: 50px;
     margin: 0 20px 0 20px;
     font-size: 35px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+#screen-output {
+    border-radius: 10px 10px 0 0;
+    padding-left: 10px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+#screen-input {
+    border-radius: 0 0 10px 10px;
     padding-right: 10px;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 .screen-text {
