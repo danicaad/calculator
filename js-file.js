@@ -16,33 +16,26 @@ decimal.addEventListener("click", () => addDecimal());
 const sign = document.querySelector("#sign");
 sign.addEventListener("click", () => changeSign());
 
-ac.addEventListener("click", () => {
-    clearInput();
-    firstNumber = 0;
-    secondNumber = 0;
-    operation = "";
-    screenOutput.textContent = "";
-    isFirstNumber = true;
-});
-
-clear.addEventListener("click", () => {
-    clearInput();
-});
-
-del.addEventListener("click", () => {
-    tempInput = tempInput.substring(0, tempInput.length - 1);
-    if (!tempInput.match(/\./)) {
-        document.getElementById("decimal").disabled = false;
-    }  
-    screenInput.textContent = tempInput === "" ? "0" : tempInput;
-    console.log(tempInput);
-});
+ac.addEventListener("click", () => clearAll());
+clear.addEventListener("click", () => clearInput());
+del.addEventListener("click", () => deleteCharacter());
 
 let tempInput = "";
 let isFirstNumber = true;
 let firstNumber = 0;
-let secondNumber = 0;
 let operation = "";
+
+const acceptedKeys = {
+    numberKeys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+    operationKeys: ['+', '-', '/', '*', '=', "Enter"],
+    editKeys: ["Backspace", 'a', 'c', 's', '.'],
+};
+
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") e.preventDefault();
+    useKeys(e.key);
+
+});
 
 function inputNumber(n) {
     if (tempInput.length == 18) {
@@ -58,19 +51,12 @@ function inputNumber(n) {
     }
 }
 
-function clearInput() {
-    screenInput.textContent = "0";
-    document.getElementById("decimal").disabled = false;
-    tempInput = "";
-}
-
 function chooseOperation(op) {
     if (operation === "=" && tempInput === "") {
         return;
     }
-    if (tempInput.charAt(tempInput.length - 1) === ".") {
-        tempInput = tempInput.slice(0, -1);
-    }
+    if (tempInput.charAt(tempInput.length - 1) === ".") tempInput = tempInput.slice(0, -1);
+    
     if (isFirstNumber) {
         if (tempInput === "") {
             tempInput = "0";
@@ -81,7 +67,6 @@ function chooseOperation(op) {
         if (op === "=") {
             screenInput.textContent = `${tempInput}`;
             firstNumber = parseFloat(tempInput);
-            console.log(isFirstNumber);
             return;
         }
         firstNumber = parseFloat(tempInput);
@@ -98,10 +83,11 @@ function chooseOperation(op) {
             screenOutput.textContent = `${firstNumber} =`;
         }
         isFirstNumber = true;
-        tempInput = firstNumber;
+        tempInput = firstNumber.toString();
+        firstNumber = 0;
         operation = op;
         document.getElementById("decimal").disabled = false;
-        screenInput.textContent = `${firstNumber}`;  
+        screenInput.textContent = `${tempInput}`;  
         return;
     }    
     if (operation !== "" && tempInput !== "") {
@@ -119,7 +105,13 @@ function operate(operation) {
         case "-":
             firstNumber = firstNumber - parseFloat(tempInput);
         break;
+        case "/":
         case "÷":
+            if (tempInput === "0") {
+                alert("Dividing by zero is not allowed.");
+                firstNumber = 0;
+                return;
+            }
             firstNumber = firstNumber / parseFloat(tempInput);
         break;
         case "x":
@@ -141,12 +133,64 @@ function addDecimal () {
 }
 
 function changeSign () {
-    if (tempInput === "" || tempInput === 0) return;
+    if (operation === "=" || tempInput === "" || tempInput === "0" || tempInput === "0.") return;
     if (tempInput.charAt(0) !== "-") {
         tempInput = "-" + tempInput;
     } else if (tempInput.charAt(0) === "-") {
         tempInput = tempInput.slice(1);
-        console.log(tempInput);
     }
     screenInput.textContent = tempInput;
+}
+
+function clearInput() {
+    screenInput.textContent = "0";
+    document.getElementById("decimal").disabled = false;
+    tempInput = "";
+}
+
+function clearAll () {
+    clearInput();
+    firstNumber = 0;
+    operation = "";
+    screenOutput.textContent = "";
+    isFirstNumber = true;
+}
+
+function deleteCharacter () {
+    if (isFirstNumber && operation === "=") {
+        clearAll();
+    }
+    tempInput = tempInput.substring(0, tempInput.length - 1);
+    if (!tempInput.match(/\./)) {
+        document.getElementById("decimal").disabled = false;
+    }  
+    screenInput.textContent = tempInput === "" ? "0" : tempInput;
+    console.log(tempInput);
+}
+
+function useKeys (value) {
+    if (acceptedKeys.numberKeys.includes(value)) inputNumber(value);
+    if (acceptedKeys.operationKeys.includes(value)) {
+        if (value === "Enter") value = "=";
+        chooseOperation(value);
+    };
+    if (acceptedKeys.editKeys.includes(value)) {
+        switch (value) {
+            case "Backspace":
+                deleteCharacter();
+            break;
+            case '.':
+                addDecimal();
+            break;
+            case 'a':
+                clearAll();
+            break;
+            case 'c':
+                clearInput();
+            break;
+            case 's':
+                changeSign();
+            break;
+        }
+    };
 }
