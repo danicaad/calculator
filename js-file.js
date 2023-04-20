@@ -38,14 +38,18 @@ function inputDigit(n) {
         if (n === "0") return;
         tempString = "";
     }
+    //reset value of tempString if input follows an equal operation
+    if (currentOperator === "=")
+    {
+        tempString = "";
+        currentOperator = "";
+    }
     tempString += n;
     screenInput.textContent = tempString;
-    console.log(`inputDigit ${tempString}`);
 }
 
 function clear() {
     tempString = "";
-    console.log(`clear value of tempString: ${tempString}`);
     screenInput.textContent = "0";
 }
 
@@ -61,22 +65,30 @@ function clearAll () {
 
 function operate(op) {
     if (isFirstOperand) {
+        if (tempString === "") return;
         currentOperator = op === "Enter" ? "=" : op;
         firstOperand = parseFloat(tempString);
         tempString = "";
         screenOutput.textContent = `${firstOperand} ${currentOperator}`;
+        screenInput.textContent = `${firstOperand}`;
         isFirstOperand = false;
-    } else {
-        secondOperand = tempString === "" ? 0 : parseFloat(tempString);
+    } else {       
         if (op === "=" || op === "Enter"){
-            if (currentOperator !== "=") {
-                screenOutput.textContent = `${firstOperand} ${currentOperator} ${secondOperand} =`;
-                evaluate(currentOperator);
-            }
+            if (currentOperator === "=") return;
+            secondOperand = tempString === "" ? firstOperand : parseFloat(tempString);            
+            screenOutput.textContent = `${firstOperand} ${currentOperator} ${secondOperand} =`;
+            evaluate(currentOperator);
+            currentOperator = "=";
             secondOperand = 0;
             tempString = firstOperand.toString();
             isFirstOperand = true;
         } else {
+            if (tempString === "") {
+                currentOperator = op;
+                screenOutput.textContent = `${firstOperand} ${currentOperator}`;
+                return;
+            };
+            secondOperand = parseFloat(tempString);
             evaluate(currentOperator);
             currentOperator = op;
             screenOutput.textContent = `${firstOperand} ${currentOperator}`;
