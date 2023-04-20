@@ -1,6 +1,7 @@
 const acBtn = document.querySelector("#all-clear");
 const clearBtn = document.querySelector("#clear");
 const delBtn = document.querySelector("#delete");
+const decimalBtn = document.querySelector("#decimal");
 const screenInput = document.querySelector("#screen-input");
 const screenOutput = document.querySelector("#screen-output");
 const numbers = document.querySelectorAll(".number");
@@ -10,13 +11,14 @@ const operators = document.querySelectorAll(".operation");
 acBtn.addEventListener ("click", () => clearAll());
 clearBtn.addEventListener("click", () => clear());
 delBtn.addEventListener("click", () => deleteDigit());
+decimalBtn.addEventListener("click", () => addDecimal());
 numbers.forEach((number) => number.addEventListener("click", () => inputDigit(number.textContent)));
 operators.forEach((operator) => operator.addEventListener("click", () => operate(operator.textContent)));
 //keyboard functionality
 const allowedKeys = {
     numberKeys: ['0','1','2','3','4','5','6','7','8','9'],
     operationKeys: ['+','-','/','*','=',"Enter"],
-    editKeys: ["Backspace", "a", "c", "s"],
+    editKeys: ["Backspace", "a", "c", "s", "."],
 };
 
 window.addEventListener("keydown", (e) => {
@@ -38,6 +40,9 @@ window.addEventListener("keydown", (e) => {
                 clear();
                 break;
             case "s":
+                break;
+            case ".":
+                addDecimal();
                 break;
         }
     }
@@ -70,6 +75,13 @@ function deleteDigit () {
     tempString = tempString.slice(0,-1);
     screenInput.textContent = tempString;
     console.log(tempString);
+}
+
+function addDecimal () {
+    let stringMatch = tempString.match(/\./);
+    if (stringMatch) return;
+    tempString = tempString === "" ? "0." : tempString + ".";
+    screenInput.textContent = tempString;
 }
 
 function clear() {
