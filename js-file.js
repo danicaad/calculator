@@ -15,7 +15,8 @@ operators.forEach((operator) => operator.addEventListener("click", () => operate
 //keyboard functionality
 const allowedKeys = {
     numberKeys: ['0','1','2','3','4','5','6','7','8','9'],
-    operationKeys: ['+','-','/','*',"=","Enter"],
+    operationKeys: ['+','-','/','*','=',"Enter"],
+    editKeys: ["Backspace", "a", "c", "s"],
 };
 
 window.addEventListener("keydown", (e) => {
@@ -24,6 +25,21 @@ window.addEventListener("keydown", (e) => {
         //prevent problematic behaviors with the Enter and / keys
         if (e.key === "Enter" || e.key === "/") e.preventDefault();
         operate(e.key);
+    }
+    if (allowedKeys.editKeys.includes(e.key)) {
+        switch (e.key) {
+            case "Backspace":
+                deleteDigit();
+                break;
+            case "a":
+                clearAll();
+                break;
+            case "c":
+                clear();
+                break;
+            case "s":
+                break;
+        }
     }
 });
 
@@ -50,7 +66,7 @@ function inputDigit(n) {
 }
 
 function deleteDigit () {
-    if (tempString === "") return;
+    if (tempString === "" || currentOperator === "=") return;    
     tempString = tempString.slice(0,-1);
     screenInput.textContent = tempString;
     console.log(tempString);
