@@ -2,6 +2,7 @@ const acBtn = document.querySelector("#all-clear");
 const clearBtn = document.querySelector("#clear");
 const delBtn = document.querySelector("#delete");
 const decimalBtn = document.querySelector("#decimal");
+const signBtn = document.querySelector("#sign");
 const screenInput = document.querySelector("#screen-input");
 const screenOutput = document.querySelector("#screen-output");
 const numbers = document.querySelectorAll(".number");
@@ -12,8 +13,10 @@ acBtn.addEventListener ("click", () => clearAll());
 clearBtn.addEventListener("click", () => clear());
 delBtn.addEventListener("click", () => deleteDigit());
 decimalBtn.addEventListener("click", () => addDecimal());
+signBtn.addEventListener("click", () => changeSign());
 numbers.forEach((number) => number.addEventListener("click", () => inputDigit(number.textContent)));
 operators.forEach((operator) => operator.addEventListener("click", () => operate(operator.textContent)));
+
 //keyboard functionality
 const allowedKeys = {
     numberKeys: ['0','1','2','3','4','5','6','7','8','9'],
@@ -40,6 +43,7 @@ window.addEventListener("keydown", (e) => {
                 clear();
                 break;
             case "s":
+                changeSign();
                 break;
             case ".":
                 addDecimal();
@@ -81,6 +85,12 @@ function addDecimal () {
     let stringMatch = tempString.match(/\./);
     if (stringMatch) return;
     tempString = tempString === "" ? "0." : tempString + ".";
+    screenInput.textContent = tempString;
+}
+
+function changeSign () {
+    if (tempString === "") return; 
+    tempString = tempString.charAt(0) === "-" ? tempString.slice(1) : "-" + tempString;
     screenInput.textContent = tempString;
 }
 
