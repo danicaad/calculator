@@ -1,201 +1,122 @@
-const ac = document.querySelector("#all-clear");
-const clear = document.querySelector("#clear");
-const del = document.querySelector("#delete");
+const acBtn = document.querySelector("#all-clear");
+const clearBtn = document.querySelector("#clear");
+const delBtn = document.querySelector("#delete");
 const screenInput = document.querySelector("#screen-input");
 const screenOutput = document.querySelector("#screen-output");
+const numbers = document.querySelectorAll(".number");
+const operators = document.querySelectorAll(".operation");
 
-const numberButtons = document.querySelectorAll('.number');
-numberButtons.forEach((number) => number.addEventListener("click", () => inputNumber(number.textContent)));
-
-const operationButtons = document.querySelectorAll('.operation');
-operationButtons.forEach((operation) => operation.addEventListener("click", () => chooseOperation(operation.textContent)));
-
-const decimal = document.querySelector("#decimal");
-decimal.addEventListener("click", () => addDecimal());
-
-const sign = document.querySelector("#sign");
-sign.addEventListener("click", () => changeSign());
-
-ac.addEventListener("click", () => clearAll());
-clear.addEventListener("click", () => clearInput());
-del.addEventListener("click", () => deleteCharacter());
-
-let isFirstNumber = true;
-let hasDecimal = false;
-let tempInput = "";
-let firstNumber = 0;
-let operation = "";
-
-const acceptedKeys = {
-    numberKeys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-    operationKeys: ['+', '-', '/', '*', '=', "Enter"],
-    editKeys: ["Backspace", 'a', 'c', 's', '.'],
+//UI button functionality
+clearBtn.addEventListener("click", () => clear());
+numbers.forEach((number) => number.addEventListener("click", () => inputDigit(number.textContent)));
+operators.forEach((operator) => operator.addEventListener("click", () => operate(operator.textContent)));
+acBtn.addEventListener ("click", () => clearAll());
+//keyboard functionality
+const allowedKeys = {
+    numberKeys: ['0','1','2','3','4','5','6','7','8','9'],
+    operationKeys: ['+','-','/','*',"=","Enter"],
 };
 
 window.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === "/") e.preventDefault();
-    useKeys(e.key);
-
+    if (allowedKeys.numberKeys.includes(e.key)) inputDigit(e.key);
+    if (allowedKeys.operationKeys.includes(e.key)) {
+        //prevent problematic behaviors with the Enter and / keys
+        if (e.key === "Enter" || e.key === "/") e.preventDefault();
+        operate(e.key);
+    }
 });
 
-function inputNumber(n) {
-    if (tempInput.length >= 18) {
-        return;
+let firstOperand = 0;
+let secondOperand = 0;
+let currentOperator = "";
+let tempString = "";
+let isFirstOperand = true;
+
+function inputDigit(n) {
+    //prevent input of multiple zeros not between non-zero numbers or after a decimal point
+    if (tempString.charAt(0) === "0" && tempString.charAt(1) !== ".") {
+        if (n === "0") return;
+        tempString = "";
     }
-    if (operation === "=") {
-        tempInput = "";
-        operation = "";
-    }
-    if (tempInput !== "0") {
-        tempInput += n;
-        screenInput.textContent = tempInput;
-    }
+    tempString += n;
+    screenInput.textContent = tempString;
+    console.log(`inputDigit ${tempString}`);
 }
 
-function chooseOperation(op) {
-
-    if (operation === "=" && tempInput === "") {
-        return;
-    }
-    if (tempInput.charAt(tempInput.length - 1) === ".") tempInput = tempInput.slice(0, -1);
-    if (isFirstNumber) {
-        if (tempInput === "") return;        
-        hasDecimal = false;
-        document.getElementById("decimal").disabled = false;
-        operation = op;
-        screenOutput.textContent = `${tempInput} ${op}`;
-        if (op === "=") {
-            screenInput.textContent = `${tempInput}`;
-            firstNumber = parseFloat(tempInput);
-            return;
-        }
-        firstNumber = parseFloat(tempInput);
-        tempInput = "";        
-        isFirstNumber = false;     
-        return;
-    }
-    if (op === "="){
-        if (operation !== "" && tempInput !== "") {
-            screenOutput.textContent = `${firstNumber} ${operation} ${tempInput} =`;
-            operate(operation);
-        } else if (operation !== "" && tempInput == "") {
-            screenOutput.textContent = `${firstNumber} =`;
-        }
-        isFirstNumber = true;
-        tempInput = firstNumber.toString();
-        firstNumber = 0;
-        operation = op;
-        hasDecimal = false;
-        document.getElementById("decimal").disabled = false;
-        screenInput.textContent = `${tempInput}`;  
-        return;
-    }    
-    if (operation !== "" && tempInput !== "") {
-        operate(operation);
-        operation = op;
-        screenOutput.textContent = `${firstNumber} ${op} ${tempInput}`;
-    }
-} 
-
-function operate(operation) {
-    switch (operation) {
-        case "+":
-            firstNumber = firstNumber + parseFloat(tempInput);
-        break;
-        case "-":
-            firstNumber = firstNumber - parseFloat(tempInput);
-        break;
-        case "/":
-        case "÷":
-            if (tempInput === "0") {
-                alert("Dividing by zero is not allowed.");
-                screenOutput.textContent = "ERROR";
-                firstNumber = 0;
-                return;
-            }
-            firstNumber = firstNumber / parseFloat(tempInput);
-        break;
-        case "*":
-        case "x":
-            firstNumber = firstNumber * parseFloat(tempInput);
-        break;
-    }
-
-    tempInput = "";
-}
-
-function addDecimal () {
-    if (operation === "=") {
-        tempInput = "";
-        operation = "";
-    }
-    tempInput = tempInput === "" ? "0." : tempInput + ".";
-    screenInput.textContent = tempInput;
-    hasDecimal = true;
-    document.getElementById("decimal").disabled = true;
-}
-
-function changeSign () {
-    if (operation === "=" || tempInput === "" || tempInput === "0" || tempInput === "0.") return;
-    if (tempInput.charAt(0) !== "-") {
-        tempInput = "-" + tempInput;
-    } else if (tempInput.charAt(0) === "-") {
-        tempInput = tempInput.slice(1);
-    }
-    screenInput.textContent = tempInput;
-}
-
-function clearInput() {
+function clear() {
+    tempString = "";
+    console.log(`clear value of tempString: ${tempString}`);
     screenInput.textContent = "0";
-    hasDecimal = false;
-    document.getElementById("decimal").disabled = false;
-    tempInput = "";
 }
 
 function clearAll () {
-    clearInput();
-    firstNumber = 0;
-    operation = "";
+    clear();
+    firstOperand = 0;
+    secondOperand = 0;
+    currentOperator = "";
+    tempString = "";
+    isFirstOperand = true;
     screenOutput.textContent = "";
-    isFirstNumber = true;
 }
 
-function deleteCharacter () {
-    if (isFirstNumber && operation === "=") {
-        clearAll();
-    }
-    tempInput = tempInput.substring(0, tempInput.length - 1);
-    if (!tempInput.match(/\./)) {
-        hasDecimal = false;
-        document.getElementById("decimal").disabled = false;
-    }
-    screenInput.textContent = tempInput === "" ? "0" : tempInput;
-}
-
-function useKeys (value) {
-    if (acceptedKeys.numberKeys.includes(value)) inputNumber(value);
-    if (acceptedKeys.operationKeys.includes(value)) {
-        if (value === "Enter") value = "=";
-        chooseOperation(value);
-    };
-    if (acceptedKeys.editKeys.includes(value)) {
-        switch (value) {
-            case "Backspace":
-                deleteCharacter();
-            break;
-            case '.':
-                if (!hasDecimal) addDecimal();
-            break;
-            case 'a':
-                clearAll();
-            break;
-            case 'c':
-                clearInput();
-            break;
-            case 's':
-                changeSign();
-            break;
+function operate(op) {
+    if (isFirstOperand) {
+        currentOperator = op === "Enter" ? "=" : op;
+        firstOperand = parseFloat(tempString);
+        tempString = "";
+        screenOutput.textContent = `${firstOperand} ${currentOperator}`;
+        isFirstOperand = false;
+    } else {
+        secondOperand = tempString === "" ? 0 : parseFloat(tempString);
+        if (op === "=" || op === "Enter"){
+            if (currentOperator !== "=") {
+                screenOutput.textContent = `${firstOperand} ${currentOperator} ${secondOperand} =`;
+                evaluate(currentOperator);
+            }
+            secondOperand = 0;
+            tempString = firstOperand.toString();
+            isFirstOperand = true;
+        } else {
+            evaluate(currentOperator);
+            currentOperator = op;
+            screenOutput.textContent = `${firstOperand} ${currentOperator}`;
+            tempString = "";
         }
-    };
+    }
 }
+function evaluate (operator) {
+    switch (operator) {
+        case '+':
+            firstOperand = add(firstOperand, secondOperand);
+            console.log(`Sum is ${firstOperand}`);
+            break;
+        case '-':
+            firstOperand = subtract(firstOperand, secondOperand);
+            console.log(`Difference is ${firstOperand}`);
+            break;
+        case '/':
+        case '÷':
+            if (secondOperand == 0) {
+                alert("Division by zero is not allowed!");
+                clearAll();
+                screenOutput.textContent = "ERROR";
+                screenInput.textContent = "0";
+                return;
+            }
+            firstOperand = divide(firstOperand, secondOperand);
+            console.log(`Quotient is ${firstOperand}`);
+            break;
+        case 'x':
+        case '*':
+            firstOperand = multiply(firstOperand, secondOperand);
+            console.log(`Product is ${firstOperand}`);
+            break;
+    }
+    screenInput.textContent = `${firstOperand}`;
+} 
 
+//operator functions
+function add (a, b) {return a + b};
+function subtract (a, b) {return a - b};
+function divide (a, b) {return a / b};
+function multiply (a, b) {return a * b};
