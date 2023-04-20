@@ -7,10 +7,11 @@ const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operation");
 
 //UI button functionality
+acBtn.addEventListener ("click", () => clearAll());
 clearBtn.addEventListener("click", () => clear());
+delBtn.addEventListener("click", () => deleteDigit());
 numbers.forEach((number) => number.addEventListener("click", () => inputDigit(number.textContent)));
 operators.forEach((operator) => operator.addEventListener("click", () => operate(operator.textContent)));
-acBtn.addEventListener ("click", () => clearAll());
 //keyboard functionality
 const allowedKeys = {
     numberKeys: ['0','1','2','3','4','5','6','7','8','9'],
@@ -46,6 +47,13 @@ function inputDigit(n) {
     }
     tempString += n;
     screenInput.textContent = tempString;
+}
+
+function deleteDigit () {
+    if (tempString === "") return;
+    tempString = tempString.slice(0,-1);
+    screenInput.textContent = tempString;
+    console.log(tempString);
 }
 
 function clear() {
