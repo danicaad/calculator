@@ -39,7 +39,7 @@ window.addEventListener("keydown", (e) => {
 });
 
 function inputNumber(n) {
-    if (tempInput.length == 18) {
+    if (tempInput.length >= 18) {
         return;
     }
     if (operation === "=") {
@@ -53,24 +53,24 @@ function inputNumber(n) {
 }
 
 function chooseOperation(op) {
+
     if (operation === "=" && tempInput === "") {
         return;
     }
     if (tempInput.charAt(tempInput.length - 1) === ".") tempInput = tempInput.slice(0, -1);
     if (isFirstNumber) {
-        if (tempInput === "") tempInput = "0";    
-        screenOutput.textContent = `${tempInput} ${op}`;
+        if (tempInput === "") return;        
         hasDecimal = false;
         document.getElementById("decimal").disabled = false;
         operation = op;
+        screenOutput.textContent = `${tempInput} ${op}`;
         if (op === "=") {
             screenInput.textContent = `${tempInput}`;
             firstNumber = parseFloat(tempInput);
             return;
         }
         firstNumber = parseFloat(tempInput);
-        tempInput = "";
-        
+        tempInput = "";        
         isFirstNumber = false;     
         return;
     }
@@ -120,7 +120,7 @@ function operate(operation) {
             firstNumber = firstNumber * parseFloat(tempInput);
         break;
     }
-    firstNumber = Math.round(firstNumber * 10) / 10;
+
     tempInput = "";
 }
 
@@ -198,3 +198,4 @@ function useKeys (value) {
         }
     };
 }
+
