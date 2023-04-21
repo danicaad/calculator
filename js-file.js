@@ -23,8 +23,7 @@ operators.forEach((operator) => operator.addEventListener("click", () => operate
 //keyboard functionality
 const allowedKeys = {
     numberKeys: ['0','1','2','3','4','5','6','7','8','9'],
-    operationKeys: ['+','-','/','*','=',"Enter"],
-    editKeys: ["Backspace", "a", "c", "s", "."],
+    operationKeys: ['+','-','/','*','=',"Enter","Backspace", "a", "c", "s", "."],
 };
 
 function pressKey (keyID) {
@@ -62,10 +61,6 @@ window.addEventListener("keydown", (e) => {
             case "Enter":
                 pressKey("equal");
                 break;
-        }
-    }
-    if (allowedKeys.editKeys.includes(e.key)) {
-        switch (e.key) {
             case "Backspace":
                 pressKey("delete");
                 break;
@@ -107,10 +102,6 @@ window.addEventListener("keyup", (e) => {
             case "Enter":
                 releaseKey("equal");
                 break;
-        }
-    }
-    if (allowedKeys.editKeys.includes(e.key)) {
-        switch (e.key) {
             case "Backspace":
                 releaseKey("delete");
                 break;
@@ -127,7 +118,7 @@ window.addEventListener("keyup", (e) => {
                 releaseKey("decimal");
                 break;
         }
-    }    
+    }  
 });
 
 let firstOperand = 0;
@@ -188,16 +179,21 @@ function changeSign () {
 }
 
 function clear() {
-    tempString = "";
-    hasOverflow = false;
+    if (currentOperator === "=") {
+        clearAll();
+    } else {
+        tempString = "";
+        hasOverflow = false;
+    }    
 }
 
 function clearAll () {
-    clear();
+    tempString = "";
     firstOperand = 0;
     secondOperand = 0;
     currentOperator = "";
     isFirstOperand = true;
+    hasOverflow = false;
     screenOutput.textContent = "";
     screenInput.textContent = "0";
     firstString = "";
@@ -211,7 +207,8 @@ function operate(op) {
         currentOperator = op === "Enter" ? "=" : op;
         firstOperand = parseFloat(tempString);
         firstString = firstOperand.toString().length >= 17 ? convertOverflow(firstOperand.toString()) : firstOperand.toString();
-        clear();
+        tempString = "";
+        hasOverflow = false;
         screenOutput.textContent = `${firstString} ${currentOperator}`;
         screenInput.textContent = `${firstString}`;
         isFirstOperand = false;
