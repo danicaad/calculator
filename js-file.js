@@ -139,8 +139,7 @@ function inputDigit(n) {
     //reset value of tempString if input follows an equal operation
     if (currentOperator === "=")
     {
-        tempString = "";
-        currentOperator = "";
+        clearAll();
     }
     //check if current input has overflow
     if (tempString.length >= 18) {
