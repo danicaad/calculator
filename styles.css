@@ -48,8 +48,9 @@ body {
     align-items: space-around;
     height: 500px;
     font-weight: 700;
-    box-shadow: 0 9px 5px rgb(109, 102, 102),
-                -16px -16px 20px rgba(255,239,213,1);
+    box-shadow: 0 25px 2px rgb(101, 146, 141),
+                -16px -16px 20px rgba(255,239,213,1),
+                2px 40px 20px rgb(159, 168, 167);
 
 }
 
@@ -124,7 +125,7 @@ body {
     padding-left: 10px;
 }
 
-button {
+.button {
     padding: 10px 20px 10px 20px;
     margin: 10px 5px 5px 5px;
     width: 70px;
@@ -134,13 +135,17 @@ button {
     transition: color 0.3s ease-out;
 }
 
-button:hover {
+.button:focus {
+    outline: none;
+}
+
+.button:hover {
     color: rgb(194, 163, 136);
     cursor: pointer;
     transform: translateY(3px);
 }
 
-button:active {
+.button:active {
     box-shadow: var(--button-shadow-clicked);
 }
 
@@ -165,7 +170,7 @@ button.operation {
     width: 95px;
 }
 #help {
-    margin-top:30px;
+    margin-top:50px;
     width: 420px;
 }
 
@@ -193,3 +198,14 @@ a:visited {
     color: var(--main-font-color);
 }
 
+#calc-link {
+    color: rgb(243, 241, 241);
+    margin-left: 20px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    text-shadow: -2px 0 1px rgb(160, 150, 150);
+}
+
+#calc-link * {
+    color: inherit;
+}
