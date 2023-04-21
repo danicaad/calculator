@@ -2,56 +2,63 @@
 <html lang="en">
     <head>
         <meta charset = "UTF-8" />
-        <title>Simple Calculator 🌸</title>
+        <title>Simple Calculator</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
         <link rel="stylesheet" href="styles.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono|Nova+Oval"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono:ital,wght@0,400;0,700;1,500|Comfortaa:wght@700"/>
         <script src="js-file.js" defer></script>
     </head>
-    <body>
-        <div id="calc-body">
-            <div id="screen-output"></div>
-            <div id="screen-input">0</div>
-            <div id="buttons">
-                <div id="right-side">
-                    <div id="edit">
-                        <button class="edit button" id="all-clear">AC</button>
-                        <button class="edit button" id="clear">C</button>
-                        <button class="edit button" id="delete">DEL</button>
+    <body>  
+        <div class="container">
+            <h1>Simple Calculator</h1>        
+            <div id="calc-body">
+                <div id="screen-output"></div>
+                <div id="screen-input">0</div>
+                <div id="buttons">
+                    <div id="right-side">
+                        <div id="edit">
+                            <button class="edit button" id="all-clear">AC</button>
+                            <button class="edit button" id="clear">C</button>
+                            <button class="edit button" id="delete">DEL</button>
+                        </div>
+        
+                        <div id="numbers">
+                            <button class="number button" id="seven">7</button>
+                            <button class="number button" id="eight">8</button>
+                            <button class="number button" id="nine">9</button>
+                            <button class="number button" id="four">4</button>
+                            <button class="number button" id="five">5</button>
+                            <button class="number button" id="six">6</button>
+                            <button class="number button" id="one">1</button>
+                            <button class="number button" id="two">2</button>
+                            <button class="number button" id="three">3</button>
+                            <button class="number button" id="zero">0</button>
+                            <button class="sign button" id="decimal">.</button>
+                            <button class="sign button" id="sign">+/-</button>
+                        </div>
                     </div>
-    
-                    <div id="numbers">
-                        <button class="number button" id="seven">7</button>
-                        <button class="number button" id="eight">8</button>
-                        <button class="number button" id="nine">9</button>
-                        <button class="number button" id="four">4</button>
-                        <button class="number button" id="five">5</button>
-                        <button class="number button" id="six">6</button>
-                        <button class="number button" id="one">1</button>
-                        <button class="number button" id="two">2</button>
-                        <button class="number button" id="three">3</button>
-                        <button class="number button" id="zero">0</button>
-                        <button class="sign button" id="decimal">.</button>
-                        <button class="sign button" id="sign">+/-</button>
+                    <div id="operation">
+                        <button class="operation button" id="add">+</button>
+                        <button class="operation button" id="subtract">-</button>
+                        <button class="operation button" id="divide">÷</button>
+                        <button class="operation button" id="multiply">x</button>
+                        <button class="operation button" id="equal">=</button>                
                     </div>
+                    
                 </div>
-                <div id="operation">
-                    <button class="operation button" id="add">+</button>
-                    <button class="operation button" id="subtract">-</button>
-                    <button class="operation button" id="divide">÷</button>
-                    <button class="operation button" id="multiply">x</button>
-                    <button class="operation button" id="equal">=</button>                
-                </div>
-                
+            </div>
+            <div id="help">
+                <h3>Keys:</h3>
+                <ul>
+                    <li id="backspace-key">backspace: delete</li>
+                    <li id="ac-key">a: clear all</li>
+                    <li id="c-key">c: clear current input</li>
+                    <li id="sign-key">s: change sign (+/-)</li>
+                </ul>
             </div>
         </div>
-        <div id="help">
-            <h3>Keys:</h3>
-            <ul>
-                <li id="backspace-key">backspace: delete</li>
-                <li id="ac-key">a: clear all</li>
-                <li id="c-key">c: clear current input</li>
-                <li id="sign-key">s: change sign (+/-)</li>
-            </ul>
-        </div>
+        <footer>
+            <p>Built by: </p><a id="account-link" href="https://github.com/danicaad" target="_blank"> danicaad <i class="fa-brands fa-github"></i></a>
+        </footer>
     </body>
 </html>

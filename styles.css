@@ -1,36 +1,68 @@
 * {
     box-sizing: border-box;
     font-family: "Roboto Mono", sans-serif;
+    color: var(--main-font-color);
 }
+
+:root {
+    --main-font-color: rgb(107, 104, 90);
+    --main-color: radial-gradient(circle, rgba(150,199,193,1) 37%, rgba(131,181,175,1) 89%);
+    --screen-color: linear-gradient(255deg, rgba(245,235,201,1) 0%, rgba(247,237,199,1) 85%);
+    --screen-inset: rgb(199, 191, 172);
+    --number-button-color: radial-gradient(circle, rgba(255,244,212,1) 45%, rgba(255,237,185,1) 100%);
+    --edit-button-color: radial-gradient(circle, rgba(252,204,170,1) 32%, rgba(244,177,131,1) 100%);
+    --operation-button-color: radial-gradient(circle, rgba(242,169,154,1) 32%, rgba(250,152,132,1) 100%);
+    --button-shadow: 0 7px 2px rgb(103, 151, 145);
+    --button-shadow-clicked: 0 4px 2px rgb(99, 143, 138);
+} 
 
 body {
     margin: 0;
+    background: radial-gradient(circle, rgba(255,239,213,1) 32%, rgba(255,250,240,1) 100%);
 
+}
+
+.container {
+    min-height: 93vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: safe center;
-    min-height: 100vh;
+    align-items: center;
+}
 
+.container > h1 {
+    color: rgb(109, 102, 102);
+    text-shadow: 1px 2px 5px rgb(150, 144, 144);
+    font-family: "Comfortaa", sans-serif;
+    font-weight: 700;
+    margin: 20px 30px;
+    width: 450px;
 }
 
 #calc-body {
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    background: var(--main-color);
     border-radius: 10px;
     justify-content: center;
     align-items: space-around;
     height: 500px;
+    font-weight: 700;
+    box-shadow: 0 9px 5px rgb(109, 102, 102),
+                -16px -16px 20px rgba(255,239,213,1);
+
+}
+
+#calc-body * {
+    font-weight: inherit;
 }
 
 #screen-input, #screen-output {
     display:flex;
-    background-color: rgb(206, 191, 191);
-    width: 400px;
+    width: 415px;
     height: 50px;
     margin: 0 20px 0 20px;
-
+    background: var(--screen-color);
     overflow: hidden;
     text-overflow: ellipsis;
 
@@ -40,9 +72,10 @@ body {
     border-radius: 10px 10px 0 0;
     padding-left: 10px;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     font-size: 20px;
-    color:rgb(110, 105, 105);
+    box-shadow: inset 2px 3px var(--screen-inset);
+    color:rgb(151, 146, 127);
 }
 
 #screen-input {
@@ -51,6 +84,8 @@ body {
     justify-content: flex-end;
     align-items: flex-end;
     font-size: 35px;
+    box-shadow: inset 2px 0px var(--screen-inset);
+
 }
 
 .screen-text {
@@ -85,20 +120,74 @@ body {
     justify-content: space-between;
 }
 
+#operation {
+    padding-left: 10px;
+}
+
 button {
     padding: 10px 20px 10px 20px;
-    margin: 5px;
+    margin: 10px 5px 5px 5px;
     width: 70px;
     font-size: 20px;
     border-radius: 7px;
+    box-shadow: var(--button-shadow);
+    transition: color 0.3s ease-out;
+}
+
+button:hover {
+    color: rgb(194, 163, 136);
+    cursor: pointer;
+    transform: translateY(3px);
+}
+
+button:active {
+    box-shadow: var(--button-shadow-clicked);
+}
+.active {
+    box-shadow: var(--button-shadow-clicked);
 }
 
 button.number, button.edit, button.sign {
     width: 90px;
+    background-image: var(--number-button-color);
+    border: none;
+}
+
+button.edit {
+    background-image: var(--edit-button-color);
+}
+
+button.operation {
+    background-image: var(--operation-button-color);
+    border: none;
+    width: 95px;
+}
+#help {
+    margin-top:30px;
+    width: 420px;
 }
 
 ul {
     padding: 0;
     list-style-type: none;
+}
+
+footer{
+    color: #6e4e4e;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    width: 100%;
+}
+
+a {
+    color: var(--main-font-color);
+    text-decoration: none;
+}
+
+a:visited {
+    color: var(--main-font-color);
 }
 
