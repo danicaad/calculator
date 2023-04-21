@@ -10,7 +10,10 @@ const operators = document.querySelectorAll(".operation");
 
 //UI button functionality
 acBtn.addEventListener ("click", () => clearAll());
-clearBtn.addEventListener("click", () => clear());
+clearBtn.addEventListener("click", () => {
+    clear();
+    screenInput.textContent = "0";
+});
 delBtn.addEventListener("click", () => deleteDigit());
 decimalBtn.addEventListener("click", () => addDecimal());
 signBtn.addEventListener("click", () => changeSign());
@@ -37,10 +40,11 @@ window.addEventListener("keydown", (e) => {
                 deleteDigit();
                 break;
             case "a":
-                clearAll();
+                clearAll();             
                 break;
             case "c":
                 clear();
+                screenInput.textContent = "0";
                 break;
             case "s":
                 changeSign();
@@ -56,7 +60,10 @@ let firstOperand = 0;
 let secondOperand = 0;
 let currentOperator = "";
 let tempString = "";
+let firstString = "";
+let secondString = "";
 let isFirstOperand = true;
+let hasOverflow = false;
 
 function inputDigit(n) {
     //prevent input of multiple zeros not between non-zero numbers or after a decimal point
@@ -70,12 +77,24 @@ function inputDigit(n) {
         tempString = "";
         currentOperator = "";
     }
-    tempString += n;
+    //check if current input has overflow
+    if (tempString.length >= 18) {
+        tempString = convertOverflow(tempString);
+        hasOverflow = true;
+    }
+    if (!hasOverflow) {
+        tempString += n;
+    }
     screenInput.textContent = tempString;
+    
 }
 
 function deleteDigit () {
-    if (tempString === "" || currentOperator === "=") return;    
+    if (tempString === "" || currentOperator === "=") return;
+    if (hasOverflow) {
+        clear();
+        return;
+    }
     tempString = tempString.slice(0,-1);
     screenInput.textContent = tempString;
     console.log(tempString);
@@ -96,7 +115,7 @@ function changeSign () {
 
 function clear() {
     tempString = "";
-    screenInput.textContent = "0";
+    hasOverflow = false;
 }
 
 function clearAll () {
@@ -104,25 +123,30 @@ function clearAll () {
     firstOperand = 0;
     secondOperand = 0;
     currentOperator = "";
-    tempString = "";
     isFirstOperand = true;
     screenOutput.textContent = "";
+    screenInput.textContent = "0";
+    firstString = "";
+    secondString = "";
 }
 
 function operate(op) {
+
     if (isFirstOperand) {
         if (tempString === "") return;
         currentOperator = op === "Enter" ? "=" : op;
         firstOperand = parseFloat(tempString);
-        tempString = "";
-        screenOutput.textContent = `${firstOperand} ${currentOperator}`;
-        screenInput.textContent = `${firstOperand}`;
+        firstString = tempString;
+        clear();
+        screenOutput.textContent = `${firstString} ${currentOperator}`;
+        screenInput.textContent = `${firstString}`;
         isFirstOperand = false;
     } else {       
         if (op === "=" || op === "Enter"){
             if (currentOperator === "=") return;
-            secondOperand = tempString === "" ? firstOperand : parseFloat(tempString);            
-            screenOutput.textContent = `${firstOperand} ${currentOperator} ${secondOperand} =`;
+            secondOperand = tempString === "" ? firstOperand : parseFloat(tempString);
+            secondString = secondOperand.toString().length >= 17 ? convertOverflow(secondOperand.toString()) : secondOperand.toString();
+            screenOutput.textContent = `${firstString} ${currentOperator} ${secondString} =`;
             evaluate(currentOperator);
             currentOperator = "=";
             secondOperand = 0;
@@ -131,14 +155,14 @@ function operate(op) {
         } else {
             if (tempString === "") {
                 currentOperator = op;
-                screenOutput.textContent = `${firstOperand} ${currentOperator}`;
+                screenOutput.textContent = `${firstString} ${currentOperator}`;
                 return;
             };
             secondOperand = parseFloat(tempString);
             evaluate(currentOperator);
             currentOperator = op;
-            screenOutput.textContent = `${firstOperand} ${currentOperator}`;
-            tempString = "";
+            screenOutput.textContent = `${firstString} ${currentOperator}`;
+            clear();
         }
     }
 }
@@ -170,7 +194,8 @@ function evaluate (operator) {
             console.log(`Product is ${firstOperand}`);
             break;
     }
-    screenInput.textContent = `${firstOperand}`;
+    firstString = firstOperand.toString().length >= 17 ? convertOverflow(firstOperand.toString()) : firstOperand.toString();
+    screenInput.textContent = `${firstString}`;
 } 
 
 //operator functions
@@ -178,3 +203,9 @@ function add (a, b) {return a + b};
 function subtract (a, b) {return a - b};
 function divide (a, b) {return a / b};
 function multiply (a, b) {return a * b};
+
+function convertOverflow (text) {
+    let converted = parseFloat(text);
+    converted = converted.toPrecision(5);
+    return converted;
+}
