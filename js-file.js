@@ -97,7 +97,6 @@ function deleteDigit () {
     }
     tempString = tempString.slice(0,-1);
     screenInput.textContent = tempString;
-    console.log(tempString);
 }
 
 function addDecimal () {
@@ -136,7 +135,7 @@ function operate(op) {
         if (tempString === "") return;
         currentOperator = op === "Enter" ? "=" : op;
         firstOperand = parseFloat(tempString);
-        firstString = tempString;
+        firstString = firstOperand.toString().length >= 17 ? convertOverflow(firstOperand.toString()) : firstOperand.toString();
         clear();
         screenOutput.textContent = `${firstString} ${currentOperator}`;
         screenInput.textContent = `${firstString}`;
@@ -149,7 +148,6 @@ function operate(op) {
             screenOutput.textContent = `${firstString} ${currentOperator} ${secondString} =`;
             evaluate(currentOperator);
             currentOperator = "=";
-            secondOperand = 0;
             tempString = firstOperand.toString();
             isFirstOperand = true;
         } else {
@@ -170,11 +168,11 @@ function evaluate (operator) {
     switch (operator) {
         case '+':
             firstOperand = add(firstOperand, secondOperand);
-            console.log(`Sum is ${firstOperand}`);
+            console.log(`${firstOperand} + ${secondOperand} = ${firstOperand}`);
             break;
         case '-':
             firstOperand = subtract(firstOperand, secondOperand);
-            console.log(`Difference is ${firstOperand}`);
+            console.log(`${firstOperand} - ${secondOperand} = ${firstOperand}`);
             break;
         case '/':
         case '÷':
@@ -186,12 +184,12 @@ function evaluate (operator) {
                 return;
             }
             firstOperand = divide(firstOperand, secondOperand);
-            console.log(`Quotient is ${firstOperand}`);
+            console.log(`${firstOperand} / ${secondOperand} = ${firstOperand}`);
             break;
         case 'x':
         case '*':
             firstOperand = multiply(firstOperand, secondOperand);
-            console.log(`Product is ${firstOperand}`);
+            console.log(`${firstOperand} * ${secondOperand} = ${firstOperand}`);
             break;
     }
     firstString = firstOperand.toString().length >= 17 ? convertOverflow(firstOperand.toString()) : firstOperand.toString();
