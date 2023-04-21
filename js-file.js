@@ -27,33 +27,107 @@ const allowedKeys = {
     editKeys: ["Backspace", "a", "c", "s", "."],
 };
 
+function pressKey (keyID) {
+    let btn = document.getElementById(`${keyID}`);
+    btn.click();
+    btn.classList.add("active");
+}
+
+function releaseKey (keyID) {
+    let btn = document.getElementById(`${keyID}`);
+    btn.classList.remove("active");
+}
+
 window.addEventListener("keydown", (e) => {
-    if (allowedKeys.numberKeys.includes(e.key)) inputDigit(e.key);
+    if (allowedKeys.numberKeys.includes(e.key)) {
+        pressKey(e.code);
+    }
     if (allowedKeys.operationKeys.includes(e.key)) {
         //prevent problematic behaviors with the Enter and / keys
         if (e.key === "Enter" || e.key === "/") e.preventDefault();
-        operate(e.key);
+        switch (e.key) {
+            case "+":
+                pressKey("add");
+                break;
+            case "-":
+                pressKey("subtract");
+                break;
+            case "/":
+                pressKey("divide");
+                break;
+            case "*":
+                pressKey("multiply");
+                break;
+            case "=":
+            case "Enter":
+                pressKey("equal");
+                break;
+        }
     }
     if (allowedKeys.editKeys.includes(e.key)) {
         switch (e.key) {
             case "Backspace":
-                deleteDigit();
+                pressKey("delete");
                 break;
             case "a":
-                clearAll();             
+                pressKey("all-clear");            
                 break;
             case "c":
-                clear();
-                screenInput.textContent = "0";
+                pressKey("clear");
                 break;
             case "s":
-                changeSign();
+                pressKey("sign");
                 break;
             case ".":
-                addDecimal();
+                pressKey("decimal");
                 break;
         }
     }
+});
+
+window.addEventListener("keyup", (e) => {
+    if (allowedKeys.numberKeys.includes(e.key)) {
+        releaseKey(e.code);
+    }
+    if (allowedKeys.operationKeys.includes(e.key)) {
+        switch (e.key) {
+            case "+":
+                releaseKey("add");
+                break;
+            case "-":
+                releaseKey("subtract");
+                break;
+            case "/":
+                releaseKey("divide");
+                break;
+            case "*":
+                releaseKey("multiply");
+                break;
+            case "=":
+            case "Enter":
+                releaseKey("equal");
+                break;
+        }
+    }
+    if (allowedKeys.editKeys.includes(e.key)) {
+        switch (e.key) {
+            case "Backspace":
+                releaseKey("delete");
+                break;
+            case "a":
+                releaseKey("all-clear");           
+                break;
+            case "c":
+                releaseKey("clear");
+                break;
+            case "s":
+                releaseKey("sign");
+                break;
+            case ".":
+                releaseKey("decimal");
+                break;
+        }
+    }    
 });
 
 let firstOperand = 0;
@@ -96,7 +170,8 @@ function deleteDigit () {
         return;
     }
     tempString = tempString.slice(0,-1);
-    screenInput.textContent = tempString;
+    if (tempString === "-") tempString = "";
+    screenInput.textContent = tempString === "" ? "0" : tempString;
 }
 
 function addDecimal () {

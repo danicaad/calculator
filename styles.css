@@ -143,7 +143,9 @@ button:hover {
 button:active {
     box-shadow: var(--button-shadow-clicked);
 }
+
 .active {
+    transform: translateY(3px);
     box-shadow: var(--button-shadow-clicked);
 }
 
