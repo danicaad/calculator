@@ -239,11 +239,9 @@ function evaluate (operator) {
     switch (operator) {
         case '+':
             firstOperand = add(firstOperand, secondOperand);
-            console.log(`${firstOperand} + ${secondOperand} = ${firstOperand}`);
             break;
         case '-':
             firstOperand = subtract(firstOperand, secondOperand);
-            console.log(`${firstOperand} - ${secondOperand} = ${firstOperand}`);
             break;
         case '/':
         case '÷':
@@ -255,12 +253,10 @@ function evaluate (operator) {
                 return;
             }
             firstOperand = divide(firstOperand, secondOperand);
-            console.log(`${firstOperand} / ${secondOperand} = ${firstOperand}`);
             break;
         case 'x':
         case '*':
             firstOperand = multiply(firstOperand, secondOperand);
-            console.log(`${firstOperand} * ${secondOperand} = ${firstOperand}`);
             break;
     }
     firstString = firstOperand.toString().length >= 17 ? convertOverflow(firstOperand.toString()) : firstOperand.toString();
