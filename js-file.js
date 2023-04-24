@@ -39,7 +39,7 @@ function releaseKey (keyID) {
 
 window.addEventListener("keydown", (e) => {
     if (allowedKeys.numberKeys.includes(e.key)) {
-        pressKey(e.code);
+        pressKey(e.key);
     }
     if (allowedKeys.operationKeys.includes(e.key)) {
         //prevent problematic behaviors with the Enter and / keys
@@ -82,7 +82,7 @@ window.addEventListener("keydown", (e) => {
 
 window.addEventListener("keyup", (e) => {
     if (allowedKeys.numberKeys.includes(e.key)) {
-        releaseKey(e.code);
+        releaseKey(e.key);
     }
     if (allowedKeys.operationKeys.includes(e.key)) {
         switch (e.key) {
