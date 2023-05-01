@@ -39,6 +39,7 @@ function releaseKey (keyID) {
 
 window.addEventListener("keydown", (e) => {
     if (allowedKeys.numberKeys.includes(e.key)) {
+        console.log(e.key);
         pressKey(e.key);
     }
     if (allowedKeys.operationKeys.includes(e.key)) {
